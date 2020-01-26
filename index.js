@@ -4,9 +4,9 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 //Setting up 
-var Server = require('./server.js');
+var Server = require('./s_server.js');
 Server.createGrid();
-var Snake1 = require('./snake.js');
+var Snake1 = require('./s_snake.js');
 Snake1.grid = Server.grid;
 Snake1.pickNewLocationForFood();
 //Just the heading
@@ -25,6 +25,13 @@ io.on('connection', function(socket){
     }
     socket.emit("connectedGood", Server)
    // console.log(Server)
+  //Timer for sending date to the client
+  let updateTimer = setInterval(sendData, 300);
+  function sendData() {
+    Snake1.update()
+    socket.emit("gotDataFromServer", {tail: Snake1.tail, hasMoved: Snake1.hasMoved, food: Snake1.food})
+  }
+
 
    
   });
