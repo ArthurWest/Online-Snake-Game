@@ -25,6 +25,8 @@ io.on('connection', function(socket){
     }
     socket.emit("connectedGood", Server)
    // console.log(Server)
+
+   
   });
 // 
 
