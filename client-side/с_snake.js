@@ -5,6 +5,7 @@ const Snake = {
 	directionX: 0,
 	directionY: 0,
 	tail: [],
+  playerIndex: 0,
 	setDirection: function(x, y) {
 		if (this.originalDirectionX + x == 0 && this.originalDirectionY + y == 0) {
 			//Don't move, pass
@@ -17,19 +18,29 @@ const Snake = {
 		};
 	},
 	setup: function() {
-		//setting up webjhook for getting data from the server
 		const snakeInstant = this;
+		const element = document.getElementById("playerNumberInput");
+		element.addEventListener("change", function() {
+			snakeInstant.playerIndex = Number(element.value-1);
+		})
+		//setting up webjhook for getting data from the server
 		socket.on("gotDataFromServer", function(properties){
 			// console.log('got data')
-			snakeInstant.hasMoved = properties.hasMoved
-			snakeInstant.tail = properties.tail
-			snakeInstant.food = properties.food
-
+			snakeInstant.hasMoved = properties[snakeInstant.playerIndex].hasMoved
+			snakeInstant.tail = properties[snakeInstant.playerIndex].tail
+			snakeInstant.food = properties[snakeInstant.playerIndex].food
 			snakeInstant.render();
+
+      if (snakeInstant.playerIndex == 0) {
+				Snake2.tail = properties[1].tail;
+			} else {
+				Snake2.tail = properties[0].tail;
+			}
+			Snake2.render();
 		})
 	},
 	sendData: function() {
-		socket.emit("sendDataToServer", this.directionX, this.directionY)
+		socket.emit("sendDataToServer", this.playerIndex, this.directionX, this.directionY)
 		// console.log('sent')
 	},
 	getData: function() {
@@ -57,6 +68,15 @@ const Snake = {
 	// move: function() {
 	// 	this.update();
 	// }
+}
+const Snake2 = {
+	tail: [],
+	render() {
+		for (let i = 0; i < this.tail.length; i++) {
+			ctx.fillStyle = "black"
+			ctx.fillRect(this.tail[i].x*Table.cell.width, this.tail[i].y*Table.cell.height, Table.cell.width, Table.cell.height)
+		}
+	}
 }
 document.addEventListener("keydown", keyHandler);
 function keyHandler(event) {

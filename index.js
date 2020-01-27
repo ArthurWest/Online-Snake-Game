@@ -6,9 +6,16 @@ var io = require('socket.io')(http);
 //Setting up 
 var Server = require('./s_server.js');
 Server.createGrid();
-var Snake1 = require('./s_snake.js');
-Snake1.grid = Server.grid;
-Snake1.pickNewLocationForFood();
+let Snake = require('./s_snake.js');
+
+let Snake1 = new Snake(Server.grid, Server)
+let Snake2 = new Snake(Server.grid, Server)
+
+const Snakes = [Snake1, Snake2];
+
+// Server.player1 = Snake1;
+// Server.player2 = Snake2;
+Server.pickNewLocationForFood();
 //Just the heading
 app.get('/', function(req, res){
   res.send('<h1>Online Snake Game by Arthur West</h1>');
@@ -16,24 +23,25 @@ app.get('/', function(req, res){
 //The real deal
 io.on('connection', function(socket){
   console.log('a user connected');
-  //After pressing the Connect button
+  
   socket.on("connectToServer", function(playerNum) {
+    //After pressing the Connect button
     if (playerNum == 1) {
       Server.player1 = true
+      let updateTimer = setInterval(sendData, 200);
     } else {
       Server.player2 = true
     }
-    socket.emit("connectedGood", Server)
+    socket.join("Server1");
+    socket.emit("connectedGood", Server)//Sending the config data to the client
    // console.log(Server)
   //Timer for sending date to the client
-  let updateTimer = setInterval(sendData, 300);
+  
   function sendData() {
     Snake1.update()
-    socket.emit("gotDataFromServer", {tail: Snake1.tail, hasMoved: Snake1.hasMoved, food: Snake1.food})
+    Snake2.update()
+    io.to('Server1').emit("gotDataFromServer", [{tail: Snake1.tail, hasMoved: Snake1.hasMoved, food: Server.food}, {tail: Snake2.tail, hasMoved: Snake2.hasMoved, food: Server.food}])
   }
-
-
-   
   });
 // 
 
@@ -41,8 +49,8 @@ io.on('connection', function(socket){
     socket.emit("gotDataFromServer", {tail: Snake1.tail, hasMoved: Snake1.hasMoved, food: Snake1.food})
   });
 
-  socket.on("sendDataToServer", function(directionX, directionY) {
-    Snake1.setDirection(directionX, directionY);
+  socket.on("sendDataToServer", function(playerIndex,directionX, directionY) {
+    Snakes[playerIndex].setDirection(directionX, directionY);
   });
 
   socket.on("updateSnake", function() {
@@ -57,4 +65,4 @@ io.on('connection', function(socket){
 http.listen(3000, function(){
   console.log('listening on *:3000');
 });
-console.log()//For stopping server loggin itself for some reason
+console.log("Starting... ")//For stopping server loggin itself for some reason

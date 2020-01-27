@@ -5,7 +5,8 @@ const Server = {
 	canvasHeight:400,
 	cell:{width:20, height:20},
 	grid: null,
-	createGrid: function() {
+  food: null,
+	createGrid() {
     //Helper class
     class Cell {
       constructor(x, y) {
@@ -33,6 +34,29 @@ const Server = {
       }
       return ar;
     };
+	},
+  pickNewLocationForFood() {
+		/** This function picks a new location for food where there is no snake
+		Returns nothing, just ends if there is no more space to choose from
+		*/
+		const options = []
+		for (let i = 0; i < this.grid.length; i++) {
+			for (let j = 0; j < this.grid[0].length;j++) {
+				if (this.grid[i][j].snake == null) {
+					options.push(this.grid[i][j])	
+				}
+			}
+		}
+		if (options.length < 1) {
+			console.log("There is no more space. Game has ended")
+			return;
+		}
+
+		const randomIndex = Math.floor(Math.random() * options.length);
+		let foodCell = options[randomIndex];
+
+		foodCell.food=true;
+		this.food = foodCell;
 	}
 }
 module.exports = Server;

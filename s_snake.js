@@ -1,23 +1,26 @@
-const Snake = {
-	x: 0,
-	y: 0,
-  grid: [],
-	tail: [],
-	parts: 1,
-	originalDirectionX: 0,
-	originalDirectionY: 0,
-	hasMoved: true,
-	directionX: 0,
-	directionY: 0,
-	food: null,
-	update: function() {
+class Snake {
+	constructor(grid, Table) {
+    this.x = 0;
+    this.y = 0;
+    this.grid = grid;
+    this.tail = [];
+    this.parts = 1;
+    this.originalDirectionX = 0;
+    this.originalDirectionY = 0;
+    this.hasMoved = true;
+    this.directionX = 0;
+    this.directionY = 0;
+    this.food = null;
+    this.Table = Table;
+  };
+	update() {
 		this.move();
 		this.hasMoved = true;
 		this.originalDirectionX = this.directionX;
 		this.originalDirectionY = this.directionY;
 		// this.render();
-	},
-	setDirection: function(x, y) {
+	};
+	setDirection(x, y) {
 		if (this.originalDirectionX + x == 0 && this.originalDirectionY + y == 0) {
 			//Don't move, pass
 		} else {
@@ -25,8 +28,8 @@ const Snake = {
 			this.directionY = y;
 			this.hasMoved = false;
 		};
-	},
-	move: function() {
+	};
+	move() {
 		const cols = this.grid.length-1;//Index of the last col
 		const rows = this.grid[0].length-1;//Index of the last row
 		//Checking for boundaries
@@ -55,7 +58,7 @@ const Snake = {
 		if (this.grid[this.x][this.y].food == true) { //If in the cell we are moving is food, then length += 1
 			this.parts += 1
 			this.grid[this.x][this.y].food = false
-			this.pickNewLocationForFood();
+			this.Table.pickNewLocationForFood();
 		}
 
 		//Deleting snake from past cells
@@ -65,35 +68,12 @@ const Snake = {
 		}
 		//Cutting tail
 		this.tail.splice(0, this.tail.length-this.parts)
-	},
+	}
 	render() {
 		for (let i = 0; i < this.tail.length; i++) {
 			this.tail[i].render();
 		}
 		this.food.render();
-	},
-	pickNewLocationForFood: function() {
-		/** This function picks a new location for food where there is no snake
-		Returns nothing, just ends if there is no more space to choose from
-		*/
-		const options = []
-		for (let i = 0; i < this.grid.length; i++) {
-			for (let j = 0; j < this.grid[0].length;j++) {
-				if (this.grid[i][j].snake == null) {
-					options.push(this.grid[i][j])	
-				}
-			}
-		}
-		if (options.length < 1) {
-			console.log("There is no more space. Game has ended")
-			return;
-		}
-
-		const randomIndex = Math.floor(Math.random() * options.length);
-		let foodCell = options[randomIndex];
-
-		foodCell.food=true;
-		Snake.food = foodCell;
-	},
-}
+	}
+};
 module.exports = Snake;
