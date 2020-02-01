@@ -1,22 +1,41 @@
 #menu {
-	width: 15rem;
+  width: 15rem;
 
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 
-	background-color: #d9d9d9;
+  background-color: #d9d9d9;
 
-	padding: 0.4rem;
-	border: 0.1rem solid gray;
+  padding: 0.4rem;
+  border: 0.1rem solid gray;
+}
+#canvasElement {
+  border: 0.1rem solid gray; 
 }
 #connectBtn {
-	background-color: red;
-	color: white;
-	cursor: no-drop;
+  background-color: red;
+  color: white;
+  cursor: no-drop;
 
-	padding: 0px;
-	border: 0px solid gray;
-	width: 4rem;
-	height: 2rem;
+  padding: 0px;
+  border: 0px solid gray;
+  width: 4rem;
+  height: 2rem;
+}
+#mobControls {
+  position: fixed;
+  bottom: 0px;
+  left: 50%;
+  transform: translate(-50%, 0);
+
+  text-align: center;
+}
+.mobControlBtn {
+  background-color: transparent;
+  border: none;
+  font-size: 3rem;
+}
+#secondline {
+  display: flex;
 }

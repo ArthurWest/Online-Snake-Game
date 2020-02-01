@@ -1,32 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Online Snake Game</title>
-	<link rel="stylesheet" type="text/css" href="с_index.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Snake Game</title>
+  <link rel="stylesheet" type="text/css" href="с_index.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
 </head>
 <body>
-	<canvas id="canvasElement" style="border: 0.1rem solid gray;">Your browser doesn't support Canvas</canvas>
-	<div id="menu">
-		<div class="menu_unit">
-			<p>Chose player number</p>
-			<select id="playerNumberInput">
-			  <option value="1"> 1<br>
-			  <option value="2"> 2<br>
-			</select>
-		</div>
-		<div class="menu_unit">
-			<p>Select server</p>
-			<select name="serverNumber" id="serverNumberInput">
-			  <option value="1">1</option>
-			</select>
-		</div>
-		<button id="connectBtn" disabled>Connect</button>
-	</div>
-	<script type="text/javascript" src="с_connect.js"></script>
-	<script type="text/javascript" src="с_snake.js"></script>
-	<script type="text/javascript" src="с_index.js"></script>
+  <canvas id="canvasElement">Your browser doesn't support Canvas</canvas>
+  <div id="menu">
+    <div class="menu_unit">
+      <p>Chose player number</p>
+      <select id="playerNumberInput">
+      <option value="1"> 1<br>
+      <option value="2"> 2<br>
+      </select>
+    </div>
+    <div class="menu_unit">
+      <p>Select server</p>
+      <select name="serverNumber" id="serverNumberInput">
+      <option value="1">1</option>
+      </select>
+    </div>
+    <button id="connectBtn" disabled>Connect</button>
+    <input type="checkbox" name="mobControls" value="on" id="mobControlsInp">Mobile controls<br>
+  </div>
+  <div id="mobControls" style="display: none;">
+    <button class="mobControlBtn">Up</button>
+    <div id="secondline">
+      <button class="mobControlBtn">Left</button>
+      <button class="mobControlBtn">Down</button>
+      <button class="mobControlBtn">Right</button>
+    </div>
+  </div>
+  <script type="text/javascript" src="с_connect.js"></script>
+  <script type="text/javascript" src="с_snake.js"></script>
+  <script type="text/javascript" src="с_index.js"></script>
 </body>
 </html>

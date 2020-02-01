@@ -23,7 +23,7 @@ app.get('/', function(req, res){
 //The real deal
 io.on('connection', function(socket){
   console.log('a user connected');
-  
+  socket.emit("ServerOnline");
   socket.on("connectToServer", function(playerNum) {
     //After pressing the Connect button
     if (playerNum == 1) {
